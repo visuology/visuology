@@ -1,3 +1,20 @@
+@font-face {
+    font-family: 'SFCompactRounded';
+    src: url('SFCompactRounded-Medium.woff2') format('woff2'),
+        url('SFCompactRounded-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SFCompactText';
+    src: url('SFCompactText-Light.woff2') format('woff2'),
+        url('SFCompactText-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
 
 body, html {
     height: 100%;
@@ -7,7 +24,7 @@ body, html {
     align-items: center;
     background-color: white;
     color: #333;
-    font-family: 'EB Garamond', serif;
+font-family: 'SFCompactText';
 }
 
 .container {
@@ -44,6 +61,10 @@ a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+}
+
+a:hover {
+  background-color: yellow;
 }
 
 @media (max-width: 600px) {

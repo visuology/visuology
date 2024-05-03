@@ -1,0 +1,59 @@
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #333;
+    font-family: 'EB Garamond', serif;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    max-width: 700px;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.photo {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    margin-right: 20px;
+}
+
+.content {
+    display: inline-block;
+}
+
+h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .container {
+        display: block;
+        text-align: center;
+    }
+
+    .photo {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}

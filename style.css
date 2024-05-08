@@ -24,7 +24,7 @@ body, html {
     align-items: center;
     background-color: white;
     color: #333;
-font-family: 'SFCompactText';
+    font-family: 'SFCompactText';
 }
 
  .container {
@@ -47,6 +47,7 @@ font-family: 'SFCompactText';
      margin-right: 20px;
      cursor: pointer;
  }
+ 
  .wave {
      position: absolute;
      border: solid 2px black;
@@ -55,6 +56,7 @@ font-family: 'SFCompactText';
      opacity: 1;
      animation: none;
  }
+ 
  @keyframes waveAnimation {
      0% {
          transform: scale(0);

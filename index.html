@@ -14,6 +14,8 @@
         <div class="content">
             <h1 style="font-family: 'SFCompactRounded'; font-size: 1.3em">Jeroen Lavèn</h1>
             <p>👷🏻‍♂️ Community Relations & Operations Manager, Melly
+            <br>💚 Connector & Chair, R'damse Nieuwe
+            <br>🏙️ Board Member, Kunstblock
             <br>📍 Rotterdam, the Netherlands
             <br>💌 <a href="mailto:mai@visuology.nl" target="_blank">Contact</a> 
             <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank">LinkedIn</a></p>
@@ -32,22 +34,20 @@
               var centerX = rect.left + rect.width / 2;
               var centerY = rect.top + rect.height / 2;
       
-              // Play the sound
               sound.play();
       
-              // Reset and re-trigger the animation for each wave
               waves.forEach(function(wave, index) {
-                  // Reset the animation by removing the style attribute
+                  // Immediately remove any existing animation
                   wave.style.animation = 'none';
                   
-                  // Reposition wave before re-animating
+                  // Reposition the wave before reanimating
                   wave.style.left = (centerX - rect.width / 2) + 'px';
                   wave.style.top = (centerY - rect.height / 2) + 'px';
       
-                  // Use setTimeout to ensure the animation is reapplied after removing it
+                  // Use setTimeout to reapply the animation
                   setTimeout(function() {
                       wave.style.animation = `waveAnimation 7s ease-out ${index * 0.5}s forwards`;
-                  }, 10); // Adding a slight delay (10 ms) to allow CSS to reset
+                  }, 50); // slight delay to ensure the reset is registered
               });
           }
       </script>

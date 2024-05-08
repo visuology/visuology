@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="jeroen.jpg" alt="Photo of Jeroen Laven" class="photo">
+        <img src="jeroen.jpg" alt="Photo of Jeroen Laven" class="photo" onclick="playSoundAndAnimate()">
         <div class="content">
             <h1 style="font-family: 'SFCompactRounded'; font-size: 1.3em">Jeroen Lavèn</h1>
             <p>👷🏻‍♂️ Community Relations & Operations Manager, Melly
@@ -19,6 +19,38 @@
             <br>💌 <a href="mailto:mai@visuology.nl">Contact</a> 
             <br>🔗 <a href="https://www.instagram.com/visuology_nl">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/">LinkedIn</a></p>
         </div>
-    </div>
+          <audio id="mySound" src="sound.mp3"></audio>
+          <div class="wave" style="width: 100px; height: 100px;"></div>
+          <div class="wave" style="width: 100px; height: 100px;"></div>
+          <div class="wave" style="width: 100px; height: 100px;"></div>
+      </div>
+      <script>
+          function playSoundAndAnimate() {
+              var sound = document.getElementById("mySound");
+              var waves = document.querySelectorAll('.wave');
+              var img = document.querySelector('.photo');
+              var rect = img.getBoundingClientRect();
+              var centerX = rect.left + rect.width / 2;
+              var centerY = rect.top + rect.height / 2;
+      
+              // Play the sound
+              sound.play();
+      
+              // Reset and re-trigger the animation for each wave
+              waves.forEach(function(wave, index) {
+                  // Reset the animation by removing the style attribute
+                  wave.style.animation = 'none';
+                  
+                  // Reposition wave before re-animating
+                  wave.style.left = (centerX - rect.width / 2) + 'px';
+                  wave.style.top = (centerY - rect.height / 2) + 'px';
+      
+                  // Use setTimeout to ensure the animation is reapplied after removing it
+                  setTimeout(function() {
+                      wave.style.animation = `waveAnimation 5s ease-out ${index * 0.5}s forwards`;
+                  }, 10); // Adding a slight delay (10 ms) to allow CSS to reset
+              });
+          }
+      </script>
 </body>
 </html>

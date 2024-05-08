@@ -27,24 +27,44 @@ body, html {
 font-family: 'SFCompactText';
 }
 
-.container {
-    display: flex;
-    align-items: center;
-    max-width: 700px;
-    text-align: left;
-    margin: 0 auto;
-}
-
-.photo {
-    border-radius: 50%;
-    height: 150px;
-    width: 150px;
-    margin-right: 20px;
-}
-
-.content {
-    display: inline-block;
-}
+ .container {
+     display: flex;
+     flex-direction: column; /* Stack vertically on mobile */
+     align-items: center; /* Center the items on mobile */
+     margin-top: 50px;
+ }
+ 
+ .content{
+     text-align: left;
+     width: 100%; /* Take full width on mobile */
+     padding: 0 10px; /* Adds padding to text */
+ }
+ 
+ .photo {
+     width: 150px;
+     height: 150px;
+     border-radius: 50%;
+     margin-right: 20px;
+     cursor: pointer;
+ }
+ .wave {
+     position: absolute;
+     border: solid 2px black;
+     border-radius: 50%;
+     transform: scale(0);
+     opacity: 1;
+     animation: none;
+ }
+ @keyframes waveAnimation {
+     0% {
+         transform: scale(0);
+         opacity: 0.75;
+     }
+     100% {
+         transform: scale(3);
+         opacity: 0;
+     }
+ }
 
 h1, h2, p, ul {
     margin: 0;
@@ -74,7 +94,23 @@ a:hover {
     }
 
     .photo {
+        margin-left: 5px;
         margin-right: 0;
         margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 600px) {
+    .container {
+        flex-direction: row; /* Horizontal layout on larger screens */
+        align-items: center; /* Align items vertically in the center */
+    }
+    .photo {
+        margin-right: 20px; /* Space between image and text on desktop */
+        margin-bottom: 0; /* No bottom margin on desktop */
+    }
+    .content {
+        padding: 0; /* No padding needed on larger screens */
+        max-width: none; /* No max-width restriction */
     }
 }

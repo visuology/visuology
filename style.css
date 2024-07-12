@@ -168,6 +168,6 @@ a:hover {
     
     .text-block {
         padding: 0; /* No padding needed on larger screens */
-        max-width: none; /* No max-width restriction */
+        max-width: 400px; /* No max-width restriction */
     }
 }

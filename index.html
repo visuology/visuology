@@ -24,6 +24,7 @@
             <br>💚 Connector & Chair, <a href="https://www.rdamsenieuwe.nl" target="_blank">R'damse Nieuwe</a>
             <br>🏙️ Board Member, <a href="https://www.dekunstavond.nl" target="_blank">Kunstblock</a>
             <br>📍 Rotterdam, the Netherlands
+            <br>🤓 More <a href="#" id="about-me-link">about me</a>
             <br>💌 <a href="mailto:mai@visuology.nl" target="_blank">Email me</a> 
             <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank">LinkedIn</a></p>
         </div>
@@ -32,6 +33,15 @@
           <div class="wave" style="width: 100px; height: 100px;"></div>
           <div class="wave" style="width: 100px; height: 100px;"></div>
       </div>
+      
+      <!-- Pop-up Structure -->
+      <div class="popup-overlay" id="popup-overlay">
+         <div class="popup-content" id="popup-content">
+             <span class="close-btn" id="close-btn">&times;</span>
+              <p>Jeroen Lavèn (NL, 1990) serves as the Community Relations & Operations Manager at Kunstinstituut Melly, where his journey began as an intern in PR & Communication in 2016. Over the years, he progressed through various roles, including Social Media and Website Assistant, PR & Social Media Editor, and PR & Communications Manager, ultimately taking on his current position. He manages and maintains the building, coordinates exhibitions, and fosters community relations, overseeing a dedicated team and working closely with tenants and external stakeholders to create a dynamic cultural environment.<br><br>As Chair of R'damse Nieuwe, Jeroen works with a team of young professionals to address urban challenges and promote innovative ideas, ensuring Rotterdam remains a vibrant, inclusive, and sustainable city. Their goal is to bridge the gap between new and established perspectives, creating a future-ready city for everyone.<br><br>Additionally, Jeroen is a Board Member at Kunstblock, a collective of contemporary art institutions in Rotterdam's art quarter. His seven years of experience as the PR & Communications Coordinator for Kunstblock have provided him with valuable insights into promoting collaborative efforts and enhancing the visibility of cultural events.<br><br>Through his company, Visuology, Jeroen specializes in contemporary digital communications, aiming to make art more accessible and engaging.</p>
+          </div>
+      </div>
+      
       <script>
           function playSoundAndAnimate() {
               var sound = document.getElementById("mySound");
@@ -57,6 +67,26 @@
                   }, 50); // slight delay to ensure the reset is registered
               });
           }
+          
+         // Pop-up functionality
+         document.getElementById('about-me-link').addEventListener('click', function(event) {
+             event.preventDefault();
+             document.getElementById('popup-overlay').classList.add('show');
+             document.getElementById('popup-content').classList.add('show');
+         });
+         
+         document.getElementById('close-btn').addEventListener('click', function() {
+             document.getElementById('popup-overlay').classList.remove('show');
+             document.getElementById('popup-content').classList.remove('show');
+         });
+         
+         // Close the pop-up when clicking outside the content
+         document.getElementById('popup-overlay').addEventListener('click', function(event) {
+             if (event.target === this) {
+                 document.getElementById('popup-overlay').classList.remove('show');
+                 document.getElementById('popup-content').classList.remove('show');
+             }
+         });
       </script>
 </body>
 </html>

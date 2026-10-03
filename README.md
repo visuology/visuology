@@ -7,9 +7,10 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 ![visuology.nl on desktop](docs/screenshot-desktop.png)
 
 <p>
-  <img src="docs/screenshot-mobile-light.png" alt="Home screen on a phone" width="240">
-  <img src="docs/screenshot-mobile-about.png" alt="About me pop-up on a phone" width="240">
-  <img src="docs/screenshot-mobile-dark.png" alt="Home screen on a phone in dark mode" width="240">
+  <img src="docs/screenshot-mobile-light.png" alt="Home screen on a phone" width="200">
+  <img src="docs/screenshot-mobile-about.png" alt="About me pop-up on a phone" width="200">
+  <img src="docs/screenshot-mobile-dark.png" alt="Home screen on a phone in dark mode" width="200">
+  <img src="docs/screenshot-mobile-timeline.png" alt="Things I've done timeline on a phone" width="200">
 </p>
 
 ## Features

@@ -38,6 +38,8 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 
 Edit `index.html` or `style.css`, commit, and push to the **`gh-pages`** branch. GitHub Pages publishes it to visuology.nl within a minute or two.
 
+> **After changing `style.css`**, raise the number in `style.css?v=2` in `index.html` (to `?v=3`, and so on). Otherwise visitors' browsers may keep using the old cached stylesheet with the new page.
+
 To preview locally, open `index.html` in a browser, or run a small server:
 
 ```sh

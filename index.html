@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -66,9 +66,9 @@
         </div>
         <audio id="mySound" src="sound.mp3" preload="none"></audio>
     </main>
-    <div class="wave" aria-hidden="true"></div>
-    <div class="wave" aria-hidden="true"></div>
-    <div class="wave" aria-hidden="true"></div>
+    <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
+    <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
+    <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
 
     <!-- Pop-up Structure -->
     <div class="popup-overlay" id="popup-overlay">
@@ -107,6 +107,13 @@
                 }, 50); // slight delay to ensure the reset is registered
             });
         }
+
+        // Shrink each wave back once it has faded out, so it never covers the links
+        document.querySelectorAll('.wave').forEach(function(wave) {
+            wave.addEventListener('animationend', function() {
+                wave.style.animation = 'none';
+            });
+        });
 
         document.getElementById('photo-btn').addEventListener('click', playSoundAndAnimate);
 

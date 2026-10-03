@@ -102,6 +102,9 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh; /* Follow the visible viewport on mobile browsers */
+    padding: 20px;
+    box-sizing: border-box;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -110,6 +113,7 @@ a:hover {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
+    cursor: pointer; /* Needed for iOS Safari to fire tap-outside clicks */
 }
 
 .popup-content {
@@ -117,10 +121,23 @@ a:hover {
     padding: 30px;
     border-radius: 8px;
     max-width: 500px;
-    width: 80%;
+    width: 100%;
+    max-height: 100%; /* Never taller than the screen */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     text-align: left;
+    cursor: auto;
     transform: translateY(-20px);
     transition: transform 0.5s ease;
+}
+
+.popup-content p {
+    margin-bottom: 0;
+    min-height: 0;
+    overflow-y: auto; /* Scroll long text inside the pop-up */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 .popup-overlay.show {
@@ -134,9 +151,16 @@ a:hover {
 
 .close-btn {
     cursor: pointer;
-    float: right;
+    align-self: flex-end;
+    flex-shrink: 0;
     font-size: 1.2em;
+    line-height: 1;
     padding: 5px;
+}
+
+html.popup-open,
+html.popup-open body {
+    overflow: hidden; /* Stop the page behind the pop-up from scrolling */
 }
 
 @media (max-width: 600px) {
@@ -149,6 +173,20 @@ a:hover {
         margin-left: 5px;
         margin-right: 0;
         margin-bottom: 20px;
+    }
+
+    .popup-overlay {
+        padding: 12px;
+    }
+
+    .popup-content {
+        padding: 20px;
+    }
+
+    .close-btn {
+        font-size: 1.8em; /* Bigger tap target on phones */
+        margin: -10px -10px 0 0;
+        padding: 10px;
     }
 }
 

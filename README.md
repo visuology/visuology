@@ -17,6 +17,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 - **Tiny and fast:** plain HTML, CSS and a few lines of JavaScript. No frameworks, build step or web fonts. A first visit loads about 25 KB.
 - **Works on any screen:** the layout stacks on phones, and the "about me" pop-up always fits the screen with its text scrolling inside.
 - **Dark mode** follows the visitor's device setting.
+- **Things I've done:** a stack of paper clippings you can swipe, flip with the arrows or keys, or shuffle, with a soft paper sound. Each card links to a website or article, and "See full list" shows everything at once.
 - **Click the photo** to hear a sound and see the wave animation (skipped for visitors who prefer reduced motion).
 - **Accessible:** the photo and close buttons are real buttons, the pop-up is announced as a dialog, focus moves into it and back, and <kbd>Esc</kbd> closes it.
 - **Good link previews and search results:** a meta description, Open Graph tags for LinkedIn, WhatsApp and Slack, and `Person` structured data for Google.
@@ -46,6 +47,16 @@ To preview locally, open `index.html` in a browser, or run a small server:
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
+
+### Adding something to "Things I've done"
+
+Near the top of the `<script>` in `index.html` is a `projects` list. Add one line per item, newest first:
+
+```js
+{ year: 2025, emoji: '🏛️', title: 'Opened the exhibition …', description: 'One short sentence.', url: 'https://…', source: 'NRC' },
+```
+
+`year`, `description` and `source` are optional. Without a `source`, the card shows the website's name, such as `nrc.nl`.
 
 ### Replacing the photo
 

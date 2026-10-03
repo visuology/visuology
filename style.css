@@ -125,7 +125,7 @@ a:focus-visible {
 /* Visible focus for keyboard users */
 a:focus-visible,
 button:focus-visible,
-.popup-content p:focus-visible {
+.popup-scroll:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 2px;
 }
@@ -172,7 +172,7 @@ button:focus-visible,
     transition: transform 0.5s ease;
 }
 
-.popup-content p {
+.popup-scroll {
     margin-bottom: 0;
     min-height: 0;
     overflow-y: auto; /* Scroll long text inside the pop-up */
@@ -256,5 +256,213 @@ html.popup-open body {
     .popup-overlay,
     .popup-content {
         transition: none;
+    }
+}
+
+/* Things I've done: header, stack of clippings and full list */
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, sans-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.popup-header .close-btn {
+    margin: 0;
+}
+
+.deck-view[hidden],
+.work-list[hidden] {
+    display: none;
+}
+
+.deck {
+    position: relative;
+    height: 230px;
+    margin: 4px 6px 0;
+}
+
+.card {
+    --paper: #f7f1e3;
+    --tilt: 0deg;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px;
+    box-sizing: border-box;
+    background: var(--paper);
+    color: #2b2620;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform-origin: 50% 80%;
+    transition: transform 0.35s cubic-bezier(.2, .8, .3, 1), opacity 0.35s ease;
+    touch-action: pan-y; /* Horizontal swipes move the card, vertical ones still scroll */
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+}
+
+/* The stack: the top card sits straight-ish, the ones below peek out */
+.card[data-depth="0"] { rotate: calc(var(--tilt) * 0.4); }
+.card[data-depth="1"] { rotate: var(--tilt); translate: 0 8px; scale: 0.96; }
+.card[data-depth="2"] { rotate: calc(var(--tilt) * -1); translate: 0 16px; scale: 0.92; }
+.card[data-depth="3"] { opacity: 0; translate: 0 16px; scale: 0.92; pointer-events: none; }
+.card { transition-property: transform, rotate, translate, scale, opacity; }
+
+.card.dragging { transition: none; cursor: grabbing; }
+.card.flying { transition: transform 0.28s ease-in, opacity 0.28s ease-in; opacity: 0; }
+.card.no-anim { transition: none; }
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(43, 38, 32, 0.25);
+    font-size: 0.85em;
+    letter-spacing: 0.08em;
+}
+
+.card-emoji { font-size: 1.5em; letter-spacing: 0; }
+
+.card-title {
+    margin: 0 0 8px;
+    font-family: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    font-size: 1.35em;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.card-text {
+    margin: 0;
+    font-family: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    font-size: 0.95em;
+    line-height: 1.35;
+    opacity: 0.8;
+}
+
+.card-link {
+    margin-top: auto;
+    align-self: flex-start;
+    font-size: 0.9em;
+    border-bottom: 1px solid currentColor;
+}
+
+.card-link:hover,
+.card-link:focus-visible {
+    background-color: yellow;
+    color: #2b2620;
+}
+
+.deck.shuffling .card[data-depth="0"],
+.deck.shuffling .card[data-depth="1"],
+.deck.shuffling .card[data-depth="2"] {
+    animation: shuffleWiggle 0.4s ease;
+}
+
+@keyframes shuffleWiggle {
+    30% { transform: translateX(-14px) rotate(-4deg); }
+    65% { transform: translateX(10px) rotate(3deg); }
+}
+
+.deck-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 28px;
+}
+
+.deck-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 20px;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1.4em;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#deck-shuffle { font-size: 1.1em; margin-left: 8px; }
+
+@media (hover: hover) {
+    .deck-btn:hover { background-color: var(--highlight); color: var(--highlight-text); }
+}
+
+.deck-count {
+    min-width: 4.5em;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9em;
+}
+
+.view-toggle {
+    align-self: center;
+    flex-shrink: 0;
+    margin-top: 14px;
+    padding: 4px 6px;
+    border: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .view-toggle:hover { background-color: var(--highlight); color: var(--highlight-text); }
+}
+
+.work-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.work-list li + li {
+    border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+}
+
+.list-link {
+    display: grid;
+    grid-template-columns: 3em 1fr;
+    gap: 2px 8px;
+    padding: 10px 2px;
+}
+
+.list-year { opacity: 0.6; font-variant-numeric: tabular-nums; }
+.list-title { grid-column: 2; }
+.list-source { grid-column: 2; font-size: 0.85em; opacity: 0.7; }
+
+/* Respect visitors who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card.flying {
+        transition: none;
+    }
+    .deck.shuffling .card {
+        animation: none !important;
     }
 }

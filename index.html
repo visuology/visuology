@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=6"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=7"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -266,6 +266,8 @@
         // Entries are sharpest at the focus point (a third from the top) and fade
         // out towards the edges; the line fills up and the dots light up as you pass.
         var FOCUS = 0.22; // keep in sync with the padding of .tl-items in style.css
+        var SHARP_ZONE = 70;   // px above and below the focus point where an entry stays sharp
+        var FADE_LENGTH = 170; // px over which it then fades out
         var ticking = false;
         function updateTimeline() {
             ticking = false;
@@ -275,8 +277,9 @@
             timelineRows.forEach(function(item) {
                 var r = item.getBoundingClientRect();
                 var offset = r.top + 14 - middle;
-                var reach = box.height * (offset < 0 ? FOCUS : 1 - FOCUS);
-                var distance = Math.min(Math.abs(offset) / reach, 1);
+                // Fully sharp within SHARP_ZONE px of the focus point, then a gentle fade
+                var t = Math.min(Math.max((Math.abs(offset) - SHARP_ZONE) / FADE_LENGTH, 0), 1);
+                var distance = t * t * (3 - 2 * t); // ease in and out
                 item.style.setProperty('--d', distance.toFixed(3));
                 item.classList.toggle('passed', r.top + 14 <= middle + 1);
             });

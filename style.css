@@ -326,9 +326,9 @@ html.popup-open body {
 
 .tl-body {
     /* Sharp at the focus point, faded, blurred and slightly shifted towards the edges */
-    opacity: calc(1 - var(--d) * 0.85);
-    transform: translateX(calc(var(--d) * 10px));
-    filter: blur(calc(var(--d) * var(--d) * 1.5px));
+    opacity: calc(1 - var(--d) * 0.75);
+    transform: translateX(calc(var(--d) * 6px));
+    filter: blur(calc(var(--d) * var(--d) * 1px));
     transition: opacity 0.15s linear, transform 0.15s linear;
 }
 

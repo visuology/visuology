@@ -10,7 +10,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
   <img src="docs/screenshot-mobile-light.png" alt="Home screen on a phone" width="200">
   <img src="docs/screenshot-mobile-about.png" alt="About me pop-up on a phone" width="200">
   <img src="docs/screenshot-mobile-dark.png" alt="Home screen on a phone in dark mode" width="200">
-  <img src="docs/screenshot-mobile-timeline.png" alt="Things I've done timeline on a phone" width="200">
+  <img src="docs/screenshot-mobile-timeline.png" alt="Along the way timeline on a phone" width="200">
 </p>
 
 ## Features
@@ -18,7 +18,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 - **Tiny and fast:** plain HTML, CSS and a few lines of JavaScript. No frameworks, build step or web fonts. A first visit loads about 25 KB.
 - **Works on any screen:** the layout stacks on phones, and the "about me" pop-up always fits the screen with its text scrolling inside.
 - **Dark mode** follows the visitor's device setting.
-- **Things I've done:** a minimal timeline. As you scroll, the entry at the focus point comes into sharp view, the others fade and blur away, and the line fills up as dots light up. Each entry links to a website or article, and "See full list" shows everything at once.
+- **Along the way:** a minimal timeline. As you scroll, the entry at the focus point comes into sharp view, the others fade and blur away, and the line fills up as dots light up. Each entry links to a website or article, and "See full list" shows everything at once.
 - **Click the photo** to hear a sound and see the wave animation (skipped for visitors who prefer reduced motion).
 - **Accessible:** the photo and close buttons are real buttons, the pop-up is announced as a dialog, focus moves into it and back, and <kbd>Esc</kbd> closes it.
 - **Good link previews and search results:** a meta description, Open Graph tags for LinkedIn, WhatsApp and Slack, and `Person` structured data for Google.
@@ -49,7 +49,7 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
-### Adding something to "Things I've done"
+### Adding something to "Along the way"
 
 Near the top of the `<script>` in `index.html` is a `projects` list. Add one line per item, newest first:
 

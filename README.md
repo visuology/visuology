@@ -17,7 +17,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 - **Tiny and fast:** plain HTML, CSS and a few lines of JavaScript. No frameworks, build step or web fonts. A first visit loads about 25 KB.
 - **Works on any screen:** the layout stacks on phones, and the "about me" pop-up always fits the screen with its text scrolling inside.
 - **Dark mode** follows the visitor's device setting.
-- **Things I've done:** a stack of paper clippings you can swipe, flip with the arrows or keys, or shuffle, with a soft paper sound. Each card links to a website or article, and "See full list" shows everything at once.
+- **Things I've done:** a minimal timeline. As you scroll, the entry at the focus point comes into sharp view, the others fade and blur away, and the line fills up as dots light up. Each entry links to a website or article, and "See full list" shows everything at once.
 - **Click the photo** to hear a sound and see the wave animation (skipped for visitors who prefer reduced motion).
 - **Accessible:** the photo and close buttons are real buttons, the pop-up is announced as a dialog, focus moves into it and back, and <kbd>Esc</kbd> closes it.
 - **Good link previews and search results:** a meta description, Open Graph tags for LinkedIn, WhatsApp and Slack, and `Person` structured data for Google.

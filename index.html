@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=3"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=6"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <!-- Things I've done pop-up: a stack of clippings, or the full list -->
+    <!-- Things I've done pop-up: a timeline, or the full list -->
     <div class="popup-overlay" id="work-popup">
         <div class="popup-content work-popup" role="dialog" aria-modal="true" aria-labelledby="work-title">
             <div class="popup-header">
@@ -87,13 +87,10 @@
                 <button type="button" class="close-btn" aria-label="Close">&times;</button>
             </div>
 
-            <div class="deck-view" id="deck-view">
-                <div class="deck" id="deck" aria-roledescription="carousel" aria-label="Things I've done"></div>
-                <div class="deck-controls">
-                    <button type="button" class="deck-btn" id="deck-prev" aria-label="Previous">‹</button>
-                    <span class="deck-count" id="deck-count" aria-live="polite"></span>
-                    <button type="button" class="deck-btn" id="deck-next" aria-label="Next">›</button>
-                    <button type="button" class="deck-btn" id="deck-shuffle" aria-label="Shuffle the cards">🔀</button>
+            <div class="timeline popup-scroll" id="timeline" tabindex="0">
+                <div class="tl-inner">
+                    <div class="tl-line" id="tl-line" aria-hidden="true"><div class="tl-progress" id="tl-progress"></div></div>
+                    <ol class="tl-items" id="tl-items"></ol>
                 </div>
             </div>
 
@@ -205,16 +202,14 @@
         });
 
         // ---------------------------------------------------------------
-        // Things I've done: the stack of clippings
+        // Things I've done: a timeline that comes into focus as you scroll
         // ---------------------------------------------------------------
-        var deck = document.getElementById('deck');
-        var deckCount = document.getElementById('deck-count');
-        var workPopup = document.getElementById('work-popup');
-        var papers = ['#f7f1e3', '#efe6d2', '#f4ecdc', '#ebe3cf', '#f6eedf'];
-        var cards = [];
-        var order = [];   // card indexes, top of the stack first
-        var step = 0;     // how far we've moved through the stack, for the counter
-        var busy = false;
+        var timeline = document.getElementById('timeline');
+        var tlItems = document.getElementById('tl-items');
+        var tlLine = document.getElementById('tl-line');
+        var tlProgress = document.getElementById('tl-progress');
+        var workList = document.getElementById('work-list');
+        var timelineRows = [];
 
         function sourceOf(project) {
             if (project.source) return project.source;
@@ -237,185 +232,75 @@
             return link;
         }
 
-        projects.forEach(function(project, i) {
-            // Card for the stack
-            var card = el('article', 'card');
-            card.style.setProperty('--paper', papers[i % papers.length]);
-            card.style.setProperty('--tilt', ((i * 37) % 7 - 3) + 'deg'); // a slightly different tilt per card
-            card.setAttribute('aria-roledescription', 'slide');
-
-            var meta = el('div', 'card-meta');
-            meta.appendChild(el('span', 'card-emoji', project.emoji || '📌'));
-            if (project.year) meta.appendChild(el('span', 'card-year', String(project.year)));
-            card.appendChild(meta);
-            card.appendChild(el('h3', 'card-title', project.title));
-            if (project.description) card.appendChild(el('p', 'card-text', project.description));
-            card.appendChild(makeLink(project, 'card-link', [el('span', '', sourceOf(project) + ' ↗')]));
-            deck.appendChild(card);
-            cards.push(card);
-            order.push(i);
+        var lastYear = null;
+        projects.forEach(function(project) {
+            // Timeline entry; the year is only shown when it changes
+            var item = el('li', 'tl-item');
+            var body = el('div', 'tl-body');
+            item.appendChild(el('span', 'tl-dot'));
+            item.appendChild(body);
+            if (project.year && project.year !== lastYear) body.appendChild(el('div', 'tl-year', String(project.year)));
+            lastYear = project.year || lastYear;
+            body.appendChild(makeLink(project, 'tl-title', [el('span', '', (project.emoji ? project.emoji + ' ' : '') + project.title)]));
+            if (project.description) body.appendChild(el('p', 'tl-text', project.description));
+            body.appendChild(makeLink(project, 'tl-source', [el('span', '', sourceOf(project) + ' ↗')]));
+            tlItems.appendChild(item);
+            timelineRows.push(item);
 
             // Row for the full list
-            var item = el('li');
-            item.appendChild(makeLink(project, 'list-link', [
+            var row = el('li');
+            row.appendChild(makeLink(project, 'list-link', [
                 el('span', 'list-year', project.year ? String(project.year) : ''),
                 el('span', 'list-title', (project.emoji ? project.emoji + ' ' : '') + project.title),
                 el('span', 'list-source', sourceOf(project) + ' ↗')
             ]));
-            document.getElementById('work-list').appendChild(item);
+            workList.appendChild(row);
         });
 
-        // Put every card in its place in the stack
-        function layout() {
-            order.forEach(function(cardIndex, depth) {
-                var card = cards[cardIndex];
-                card.dataset.depth = Math.min(depth, 3);
-                card.style.zIndex = cards.length - depth;
-                card.style.transform = '';
-                var isTop = depth === 0;
-                card.setAttribute('aria-hidden', isTop ? 'false' : 'true');
-                card.inert = !isTop;
+        // Entries are sharpest at the focus point (a third from the top) and fade
+        // out towards the edges; the line fills up and the dots light up as you pass.
+        var FOCUS = 0.22; // keep in sync with the padding of .tl-items in style.css
+        var ticking = false;
+        function updateTimeline() {
+            ticking = false;
+            var box = timeline.getBoundingClientRect();
+            if (!box.height) return;
+            var middle = box.top + box.height * FOCUS;
+            timelineRows.forEach(function(item) {
+                var r = item.getBoundingClientRect();
+                var offset = r.top + 14 - middle;
+                var reach = box.height * (offset < 0 ? FOCUS : 1 - FOCUS);
+                var distance = Math.min(Math.abs(offset) / reach, 1);
+                item.style.setProperty('--d', distance.toFixed(3));
+                item.classList.toggle('passed', r.top + 14 <= middle + 1);
             });
-            var n = cards.length;
-            deckCount.textContent = (((step % n) + n) % n + 1) + ' / ' + n;
+            // The line runs from the first dot to the last, and fills up to the middle
+            if (!timelineRows.length) return;
+            var origin = tlLine.parentNode.getBoundingClientRect().top;
+            var firstDot = timelineRows[0].getBoundingClientRect().top + 14;
+            var lastDot = timelineRows[timelineRows.length - 1].getBoundingClientRect().top + 14;
+            tlLine.style.top = (firstDot - origin) + 'px';
+            tlLine.style.height = (lastDot - firstDot) + 'px';
+            tlProgress.style.height = Math.max(0, Math.min(middle, lastDot) - firstDot) + 'px';
         }
-
-        // A soft paper "swish", made in the browser so there's no file to load
-        var audioCtx = null;
-        function swish() {
-            try {
-                audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-                var length = audioCtx.sampleRate * 0.18;
-                var buffer = audioCtx.createBuffer(1, length, audioCtx.sampleRate);
-                var data = buffer.getChannelData(0);
-                for (var i = 0; i < length; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
-                }
-                var noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                var filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                filter.frequency.exponentialRampToValueAtTime(4000, audioCtx.currentTime + 0.18);
-                var gain = audioCtx.createGain();
-                gain.gain.value = 0.12;
-                noise.connect(filter).connect(gain).connect(audioCtx.destination);
-                noise.start();
-            } catch (e) { /* no sound, no problem */ }
+        function requestUpdate() {
+            if (!ticking) { ticking = true; requestAnimationFrame(updateTimeline); }
         }
-
-        // Throw the top card off to one side and bring the next one up
-        function next(direction) {
-            if (busy || cards.length < 2) return;
-            busy = true;
-            swish();
-            var card = cards[order[0]];
-            var finish = function() {
-                order.push(order.shift());
-                step++;
-                card.classList.add('no-anim');
-                layout();
-                card.offsetHeight; // apply the jump to the back without animating it
-                card.classList.remove('no-anim');
-                busy = false;
-            };
-            if (reduceMotion.matches) return finish();
-            card.classList.add('flying');
-            card.style.transform = 'translateX(' + (direction * 130) + '%) rotate(' + (direction * 18) + 'deg)';
-            setTimeout(function() { card.classList.remove('flying'); finish(); }, 280);
-        }
-
-        // Bring the last card back from the side onto the top
-        function previous() {
-            if (busy || cards.length < 2) return;
-            busy = true;
-            swish();
-            order.unshift(order.pop());
-            step--;
-            var card = cards[order[0]];
-            if (!reduceMotion.matches) {
-                card.classList.add('no-anim');
-                card.style.zIndex = cards.length + 1;
-                card.style.transform = 'translateX(-130%) rotate(-18deg)';
-                card.dataset.depth = 0;
-                card.offsetHeight;
-                card.classList.remove('no-anim');
-            }
-            layout();
-            setTimeout(function() { busy = false; }, 280);
-        }
-
-        function shuffle() {
-            if (busy) return;
-            for (var i = order.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
-            }
-            step = 0;
-            swish();
-            deck.classList.remove('shuffling');
-            deck.offsetHeight;
-            deck.classList.add('shuffling');
-            layout();
-        }
-
-        document.getElementById('deck-next').addEventListener('click', function() { next(1); });
-        document.getElementById('deck-prev').addEventListener('click', previous);
-        document.getElementById('deck-shuffle').addEventListener('click', shuffle);
-        deck.addEventListener('animationend', function() { deck.classList.remove('shuffling'); });
-
-        document.addEventListener('keydown', function(event) {
-            if (openOverlay !== workPopup || document.getElementById('deck-view').hidden) return;
-            if (event.key === 'ArrowRight') next(1);
-            if (event.key === 'ArrowLeft') previous();
+        timeline.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate);
+        document.getElementById('work-link').addEventListener('click', function() {
+            timeline.scrollTop = 0;
+            requestAnimationFrame(updateTimeline);
         });
 
-        // Swipe or drag the top card
-        var drag = null;
-        deck.addEventListener('pointerdown', function(event) {
-            var card = event.target.closest('.card');
-            if (!card || card !== cards[order[0]] || busy) return;
-            drag = { card: card, x: event.clientX, dx: 0, id: event.pointerId };
-            card.classList.add('dragging');
-        });
-        deck.addEventListener('pointermove', function(event) {
-            if (!drag || event.pointerId !== drag.id) return;
-            drag.dx = event.clientX - drag.x;
-            if (Math.abs(drag.dx) > 5 && !drag.captured) {
-                drag.card.setPointerCapture(event.pointerId);
-                drag.captured = true;
-            }
-            drag.card.style.transform = 'translateX(' + drag.dx + 'px) rotate(calc(var(--tilt) + ' + (drag.dx / 15) + 'deg))';
-        });
-        function endDrag() {
-            if (!drag) return;
-            var d = drag;
-            drag = null;
-            d.card.classList.remove('dragging');
-            if (Math.abs(d.dx) > 80) {
-                next(d.dx > 0 ? 1 : -1);
-            } else {
-                d.card.style.transform = '';
-            }
-            if (Math.abs(d.dx) > 5) draggedAt = Date.now();
-        }
-        // A drag is not a click: don't open the link underneath
-        var draggedAt = 0;
-        deck.addEventListener('click', function(event) {
-            if (Date.now() - draggedAt < 400) event.preventDefault();
-        }, true);
-        deck.addEventListener('pointerup', endDrag);
-        deck.addEventListener('pointercancel', endDrag);
-
-        // Switch between the stack and the full list
+        // Switch between the timeline and the full list
         document.getElementById('view-toggle').addEventListener('click', function() {
-            var showList = document.getElementById('work-list').hidden;
-            document.getElementById('work-list').hidden = !showList;
-            document.getElementById('deck-view').hidden = showList;
-            this.textContent = showList ? 'Back to the cards' : 'See full list';
+            var showList = workList.hidden;
+            workList.hidden = !showList;
+            timeline.hidden = showList;
+            this.textContent = showList ? 'Back to the timeline' : 'See full list';
+            if (!showList) { timeline.scrollTop = 0; requestUpdate(); }
         });
-
-        layout();
     </script>
 </body>
 </html>

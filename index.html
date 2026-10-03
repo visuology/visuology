@@ -2,108 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeroen Lavèn</title>
+    <meta name="description" content="Jeroen Lavèn — Community Relations &amp; Operations Manager at Kunstinstituut Melly, board member of BIZ Witte de Withkwartier and Kunstblock, based in Rotterdam.">
+    <link rel="canonical" href="https://visuology.nl/">
+
+    <!-- Link previews (LinkedIn, WhatsApp, Slack, ...) -->
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="https://visuology.nl/">
+    <meta property="og:title" content="Jeroen Lavèn">
+    <meta property="og:description" content="Community Relations &amp; Operations Manager at Kunstinstituut Melly. Board member of BIZ Witte de Withkwartier and Kunstblock. Rotterdam.">
+    <meta property="og:image" content="https://visuology.nl/og-image-800.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
+    <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
+    <meta name="twitter:card" content="summary">
+
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Jeroen Lavèn",
+        "url": "https://visuology.nl/",
+        "image": "https://visuology.nl/og-image-800.jpg",
+        "email": "mailto:mail@visuology.nl",
+        "jobTitle": "Community Relations & Operations Manager",
+        "worksFor": { "@type": "Organization", "name": "Kunstinstituut Melly", "url": "https://www.kunstinstituutmelly.nl" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Rotterdam", "addressCountry": "NL" },
+        "sameAs": [
+            "https://www.instagram.com/visuology_nl",
+            "https://www.linkedin.com/in/visuology/"
+        ]
+    }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <img src="jeroen.jpg" alt="Photo of Jeroen Laven" class="photo" onclick="playSoundAndAnimate()">
+    <main class="container">
+        <button type="button" class="photo-btn" id="photo-btn" aria-label="Play a sound">
+            <picture>
+                <source srcset="jeroen-300.webp" type="image/webp">
+                <img src="jeroen-300.jpg" alt="Portrait of Jeroen Lavèn" class="photo" width="150" height="150">
+            </picture>
+        </button>
         <div class="content">
-            <h1 style="font-family: 'SFCompactRounded'; font-size: 1.3em">Jeroen Lavèn</h1>
-            <p>👷🏻‍♂️ Community Relations & Operations Manager, <a href="https://www.kunstinstituutmelly.nl" target="_blank"> Melly</a>
-            <br>🏙️ Board Member, <a href="https://wdwkwartier.nl" target="_blank">BIZ Witte de Withkwartier</a>
-            <br>🌙 Board Member, <a href="https://www.dekunstavond.nl" target="_blank">Kunstblock</a>
+            <h1>Jeroen Lavèn</h1>
+            <p>👷🏻‍♂️ Community Relations &amp; Operations Manager, <a href="https://www.kunstinstituutmelly.nl" target="_blank" rel="noopener">Melly</a>
+            <br>🏙️ Board Member, <a href="https://wdwkwartier.nl" target="_blank" rel="noopener">BIZ Witte de Withkwartier</a>
+            <br>🌙 Board Member, <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener">Kunstblock</a>
             <br>📍 Rotterdam, the Netherlands
-            <br>🤓 More <a href="#" id="about-me-link">about me</a>
-            <br>💌 <a href="mailto:mai@visuology.nl" target="_blank">Email me</a> 
-            <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank">LinkedIn</a></p>
+            <br>🤓 More <a href="#about" id="about-me-link" aria-haspopup="dialog" aria-controls="popup-content">about me</a>
+            <br>💌 <a href="mailto:mail@visuology.nl">Email me</a>
+            <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank" rel="noopener">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank" rel="noopener">LinkedIn</a></p>
         </div>
-          <audio id="mySound" src="sound.mp3"></audio>
-          <div class="wave" style="width: 100px; height: 100px;"></div>
-          <div class="wave" style="width: 100px; height: 100px;"></div>
-          <div class="wave" style="width: 100px; height: 100px;"></div>
-      </div>
-      
-      <!-- Pop-up Structure -->
-      <div class="popup-overlay" id="popup-overlay">
-         <div class="popup-content" id="popup-content">
-             <span class="close-btn" id="close-btn">&times;</span>
-              <p>Jeroen Lavèn (NL, 1990) serves as the Community Relations & Operations Manager at Kunstinstituut Melly, where his journey began as an intern in PR & Communication in 2016. Over the years, he progressed through various roles, including Social Media and Website Assistant, PR & Social Media Editor, and PR & Communications Manager, ultimately taking on his current position. He manages and maintains the building, coordinates exhibitions, and fosters community relations, overseeing a dedicated team and working closely with tenants and external stakeholders to create a dynamic cultural environment.<br><br>As a board member of BIZ Witte de Withkwartier, Jeroen works alongside fellow entrepreneurs and stakeholders to strengthen the district's economic vitality and shared public space. Together, they aim to keep the Witte de Withkwartier a vibrant, inclusive, and welcoming destination — for businesses, residents, and visitors alike..<br><br>Additionally, Jeroen is a Board Member at Kunstblock, a collective of contemporary art institutions in Rotterdam's art quarter. His seven years of experience as the PR & Communications Coordinator for Kunstblock have provided him with valuable insights into promoting collaborative efforts and enhancing the visibility of cultural events.<br><br>Through his company, Visuology, Jeroen specializes in contemporary digital communications, aiming to make art more accessible and engaging.</p>
-          </div>
-      </div>
-      
-      <script>
-          function playSoundAndAnimate() {
-              var sound = document.getElementById("mySound");
-              var waves = document.querySelectorAll('.wave');
-              var img = document.querySelector('.photo');
-              var rect = img.getBoundingClientRect();
-              var centerX = rect.left + rect.width / 2;
-              var centerY = rect.top + rect.height / 2;
-      
-              sound.play();
-      
-              waves.forEach(function(wave, index) {
-                  // Immediately remove any existing animation
-                  wave.style.animation = 'none';
-                  
-                  // Reposition the wave before reanimating
-                  wave.style.left = (centerX - rect.width / 2) + 'px';
-                  wave.style.top = (centerY - rect.height / 2) + 'px';
-      
-                  // Use setTimeout to reapply the animation
-                  setTimeout(function() {
-                      wave.style.animation = `waveAnimation 7s ease-out ${index * 0.5}s forwards`;
-                  }, 50); // slight delay to ensure the reset is registered
-              });
-          }
-          
-         // Pop-up functionality
-         var popupOverlay = document.getElementById('popup-overlay');
-         var popupContent = document.getElementById('popup-content');
+        <audio id="mySound" src="sound.mp3" preload="none"></audio>
+    </main>
+    <div class="wave" aria-hidden="true"></div>
+    <div class="wave" aria-hidden="true"></div>
+    <div class="wave" aria-hidden="true"></div>
 
-         function openPopup() {
-             popupOverlay.classList.add('show');
-             popupContent.classList.add('show');
-             popupContent.querySelector('p').scrollTop = 0;
-             document.documentElement.classList.add('popup-open');
-         }
+    <!-- Pop-up Structure -->
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup-content" id="popup-content" role="dialog" aria-modal="true" aria-label="About Jeroen Lavèn">
+            <button type="button" class="close-btn" id="close-btn" aria-label="Close">&times;</button>
+            <p tabindex="0">Jeroen Lavèn (NL, 1990) serves as the Community Relations & Operations Manager at Kunstinstituut Melly, where his journey began as an intern in PR & Communication in 2016. Over the years, he progressed through various roles, including Social Media and Website Assistant, PR & Social Media Editor, and PR & Communications Manager, ultimately taking on his current position. He manages and maintains the building, coordinates exhibitions, and fosters community relations, overseeing a dedicated team and working closely with tenants and external stakeholders to create a dynamic cultural environment.<br><br>As a board member of BIZ Witte de Withkwartier, Jeroen works alongside fellow entrepreneurs and stakeholders to strengthen the district's economic vitality and shared public space. Together, they aim to keep the Witte de Withkwartier a vibrant, inclusive, and welcoming destination — for businesses, residents, and visitors alike.<br><br>Additionally, Jeroen is a Board Member at Kunstblock, a collective of contemporary art institutions in Rotterdam's art quarter. His seven years of experience as the PR & Communications Coordinator for Kunstblock have provided him with valuable insights into promoting collaborative efforts and enhancing the visibility of cultural events.<br><br>Through his company, Visuology, Jeroen specializes in contemporary digital communications, aiming to make art more accessible and engaging.</p>
+        </div>
+    </div>
 
-         function closePopup() {
-             popupOverlay.classList.remove('show');
-             popupContent.classList.remove('show');
-             document.documentElement.classList.remove('popup-open');
-         }
+    <script>
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-         document.getElementById('about-me-link').addEventListener('click', function(event) {
-             event.preventDefault();
-             openPopup();
-         });
+        function playSoundAndAnimate() {
+            var sound = document.getElementById('mySound');
+            var waves = document.querySelectorAll('.wave');
+            var rect = document.querySelector('.photo').getBoundingClientRect();
 
-         document.getElementById('close-btn').addEventListener('click', closePopup);
+            sound.currentTime = 0;
+            sound.play();
 
-         // Close the pop-up when clicking outside the content
-         popupOverlay.addEventListener('click', function(event) {
-             if (event.target === this) {
-                 closePopup();
-             }
-         });
+            if (reduceMotion.matches) return;
 
-         document.addEventListener('keydown', function(event) {
-             if (event.key === 'Escape') {
-                 closePopup();
-             }
-         });
-      </script>
+            waves.forEach(function(wave, index) {
+                // Immediately remove any existing animation
+                wave.style.animation = 'none';
+
+                // Cover the photo exactly so the waves grow from its centre
+                wave.style.left = (rect.left + window.scrollX) + 'px';
+                wave.style.top = (rect.top + window.scrollY) + 'px';
+                wave.style.width = rect.width + 'px';
+                wave.style.height = rect.height + 'px';
+
+                // Use setTimeout to reapply the animation
+                setTimeout(function() {
+                    wave.style.animation = 'waveAnimation 7s ease-out ' + (index * 0.5) + 's forwards';
+                }, 50); // slight delay to ensure the reset is registered
+            });
+        }
+
+        document.getElementById('photo-btn').addEventListener('click', playSoundAndAnimate);
+
+        // Pop-up functionality
+        var page = document.querySelector('.container');
+        var aboutLink = document.getElementById('about-me-link');
+        var popupOverlay = document.getElementById('popup-overlay');
+        var popupContent = document.getElementById('popup-content');
+        var closeBtn = document.getElementById('close-btn');
+
+        function isOpen() {
+            return popupOverlay.classList.contains('show');
+        }
+
+        function openPopup() {
+            popupOverlay.classList.add('show');
+            popupContent.classList.add('show');
+            popupContent.querySelector('p').scrollTop = 0;
+            document.documentElement.classList.add('popup-open');
+            page.inert = true; // Keep keyboard and screen readers inside the pop-up
+            closeBtn.focus();
+        }
+
+        function closePopup() {
+            if (!isOpen()) return;
+            popupOverlay.classList.remove('show');
+            popupContent.classList.remove('show');
+            document.documentElement.classList.remove('popup-open');
+            page.inert = false;
+            aboutLink.focus();
+        }
+
+        aboutLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            openPopup();
+        });
+
+        closeBtn.addEventListener('click', closePopup);
+
+        // Close the pop-up when clicking outside the content
+        popupOverlay.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closePopup();
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePopup();
+            }
+        });
+    </script>
 </body>
 </html>

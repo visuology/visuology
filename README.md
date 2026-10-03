@@ -29,7 +29,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 | --- | --- |
 | `index.html` | The page, including its small script |
 | `style.css` | All styling, with light and dark colours as CSS variables at the top |
-| `jeroen-300.webp` / `jeroen-300.jpg` | The profile photo (WebP, with a JPEG fallback for old browsers) |
+| `jeroen-300.*` / `jeroen-600.*` | The profile photo in two sizes (WebP, with a JPEG fallback for old browsers); sharp screens and the larger desktop layout get the 600px version |
 | `og-image-800.jpg` | The image used in link previews |
 | `sound.mp3` | The sound played when the photo is clicked |
 | `favicon*`, `apple-touch-icon.png`, `android-chrome-*`, `mstile-150x150.png`, `site.webmanifest`, `browserconfig.xml` | Browser and home-screen icons |
@@ -61,11 +61,13 @@ Near the top of the `<script>` in `index.html` is a `projects` list. Add one lin
 
 ### Replacing the photo
 
-Export a square photo at 300 × 300 px as both `jeroen-300.webp` and `jeroen-300.jpg`, with location and camera data removed. For example, with ImageMagick:
+Export a square photo at 300 × 300 px and 600 × 600 px, as both WebP and JPEG, with location and camera data removed. For example, with ImageMagick:
 
 ```sh
 convert original.jpg -strip -resize 300x300 -quality 80 jeroen-300.webp
 convert original.jpg -strip -resize 300x300 -quality 82 jeroen-300.jpg
+convert original.jpg -strip -resize 600x600 -quality 78 jeroen-600.webp
+convert original.jpg -strip -resize 600x600 -quality 80 jeroen-600.jpg
 convert original.jpg -strip -resize 800x800 -quality 80 og-image-800.jpg
 ```
 

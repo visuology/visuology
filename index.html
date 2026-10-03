@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=8"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=10"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -50,8 +50,8 @@
     <main class="container">
         <button type="button" class="photo-btn" id="photo-btn" aria-label="Play a sound">
             <picture>
-                <source srcset="jeroen-300.webp" type="image/webp">
-                <img src="jeroen-300.jpg" alt="Portrait of Jeroen Lavèn" class="photo" width="150" height="150">
+                <source srcset="jeroen-300.webp 300w, jeroen-600.webp 600w" sizes="(min-width: 780px) 280px, 150px" type="image/webp">
+                <img src="jeroen-300.jpg" srcset="jeroen-300.jpg 300w, jeroen-600.jpg 600w" sizes="(min-width: 780px) 280px, 150px" alt="Portrait of Jeroen Lavèn" class="photo" width="150" height="150">
             </picture>
         </button>
         <div class="content">
@@ -157,6 +157,21 @@
         });
 
         document.getElementById('photo-btn').addEventListener('click', playSoundAndAnimate);
+
+        // Next to the text, make the photo exactly as tall as the text block
+        var sideBySide = window.matchMedia('(min-width: 780px)'); // keep in sync with style.css
+        var textBlock = document.querySelector('.content');
+        function sizePhoto() {
+            if (sideBySide.matches) {
+                var size = Math.min(Math.round(textBlock.getBoundingClientRect().height), 360); // never larger than 360px
+                document.documentElement.style.setProperty('--photo-size', size + 'px');
+            } else {
+                document.documentElement.style.removeProperty('--photo-size');
+            }
+        }
+        if (window.ResizeObserver) new ResizeObserver(sizePhoto).observe(textBlock);
+        sideBySide.addEventListener('change', sizePhoto);
+        sizePhoto();
 
         // Pop-up functionality (shared by all pop-ups)
         var page = document.querySelector('.container');

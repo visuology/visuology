@@ -73,9 +73,19 @@ h1 {
 
 .photo {
     display: block;
-    width: 150px;
-    height: 150px;
+    width: var(--photo-size, 150px); /* Set to the height of the text block on wider screens */
+    height: var(--photo-size, 150px);
     border-radius: 50%;
+    object-fit: cover;
+}
+
+/* More room between the lines, so the emoji can breathe */
+.content p {
+    line-height: 1.75;
+}
+
+.content p:last-child {
+    margin-bottom: 0; /* So the text block ends where the last line ends */
 }
 
 .wave {
@@ -212,7 +222,8 @@ html.popup-open body {
     overflow: hidden; /* Stop the page behind the pop-up from scrolling */
 }
 
-@media (max-width: 600px) {
+/* Photo above the text until there's room for the text next to it without wrapping */
+@media (max-width: 779px) {
     .container {
         display: block;
         text-align: center;
@@ -222,6 +233,13 @@ html.popup-open body {
         margin: 0 auto 20px;
     }
 
+    .content {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 600px) {
     .popup-overlay {
         padding: 12px;
     }
@@ -237,10 +255,12 @@ html.popup-open body {
     }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 780px) {
     .container {
         flex-direction: row; /* Horizontal layout on larger screens */
         align-items: center; /* Align items vertically in the center */
+        padding: 0 24px;
+        box-sizing: border-box;
     }
     .photo-btn {
         margin-right: 20px; /* Space between image and text on desktop */

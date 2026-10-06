@@ -20,7 +20,7 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 - **Dark mode** follows the visitor's device setting.
 - **Along the way:** a minimal timeline. As you scroll, the entry at the focus point comes into sharp view, the others fade and blur away, and the line fills up as dots light up. Each entry links to a website or article, and "See full list" shows everything at once.
 - **Click the photo** to hear a sound and see the wave animation (skipped for visitors who prefer reduced motion), while a speech bubble pops out of the megaphone with a short line. Edit the lines in `megaphoneLines` at the top of the script.
-- **Next Kunstavond:** the date of the next Kunstavond (first Friday of the month, 18:00–21:00) is worked out automatically, and says "tonight" or "on now" on the day. Add months without a Kunstavond to `kunstavondSkip`, e.g. `'2027-08'`.
+- **Next Kunstavond:** one of the megaphone's lines (and always the first) gives the date of the next Kunstavond (first Friday of the month, 18:00–21:00), worked out automatically, or says "tonight" / "on now" on the day. Add months without a Kunstavond to `kunstavondSkip`, e.g. `'2027-08'`.
 - **Save my contact:** phones download a contact card (`jeroen-laven.vcf`, with photo); computers show a QR code (`qr-contact.svg`) to scan with a phone. After changing your details, update both files.
 - **Accessible:** the photo and close buttons are real buttons, the pop-up is announced as a dialog, focus moves into it and back, and <kbd>Esc</kbd> closes it.
 - **Good link previews and search results:** a meta description, Open Graph tags for LinkedIn, WhatsApp and Slack, and `Person` structured data for Google.

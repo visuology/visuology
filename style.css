@@ -505,6 +505,20 @@ html.popup-open body {
     transform: rotate(45deg);
 }
 
+/* When the bubble sits below the megaphone, the tail points up */
+.speech.below {
+    transform-origin: var(--tail-x) 0;
+}
+
+.speech.below::after {
+    bottom: auto;
+    top: -7px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: inherit;
+    border-top: inherit;
+}
+
 /* Save my contact pop-up */
 .contact-popup {
     max-width: 340px;

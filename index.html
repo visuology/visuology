@@ -22,7 +22,7 @@
     <meta property="profile:last_name" content="Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=14"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=15"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -85,15 +85,17 @@
         </button>
         <div class="content">
             <h1>Jeroen Lavèn</h1>
-            <p>👷🏻‍♂️ Community Relations &amp; Operations Manager, <a href="https://www.kunstinstituutmelly.nl" target="_blank" rel="noopener">Melly</a>
-            <br>🏙️ Chair, <a href="https://wdwkwartier.nl" target="_blank" rel="noopener">BIZ Witte de Withkwartier</a>
-            <br>🌙 Board Member, <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener">Kunstblock</a>
-            <br>📍 Rotterdam, the Netherlands
-            <br>🤓 More <a href="#about" id="about-me-link" data-popup="about-popup" aria-haspopup="dialog">about me</a>
-            <br>🧭 <a href="#work" id="work-link" data-popup="work-popup" aria-haspopup="dialog">Along the way</a>
-            <br>💌 <a href="mailto:mail@visuology.nl">Email me</a>
-            <br>📇 <a href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf" id="contact-link" aria-haspopup="dialog">Save my contact</a>
-            <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank" rel="noopener">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank" rel="noopener">LinkedIn</a></p>
+            <ul class="links">
+                <li><span class="links-emoji" aria-hidden="true">👷🏻‍♂️</span><span>Community Relations &amp; Operations Manager, <a href="https://www.kunstinstituutmelly.nl" target="_blank" rel="noopener">Melly</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">🏙️</span><span>Chair, <a href="https://wdwkwartier.nl" target="_blank" rel="noopener">BIZ Witte de Withkwartier</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">🌙</span><span>Board Member, <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener">Kunstblock</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">📍</span><span>Rotterdam, the Netherlands</span></li>
+                <li><span class="links-emoji" aria-hidden="true">🤓</span><span>More <a href="#about" id="about-me-link" data-popup="about-popup" aria-haspopup="dialog">about me</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">🧭</span><span><a href="#work" id="work-link" data-popup="work-popup" aria-haspopup="dialog">Along the way</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">💌</span><span><a href="mailto:mail@visuology.nl">Email me</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">📇</span><span><a href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf" id="contact-link" aria-haspopup="dialog">Save my contact</a></span></li>
+                <li><span class="links-emoji" aria-hidden="true">🔗</span><span><a href="https://www.instagram.com/visuology_nl" target="_blank" rel="noopener">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank" rel="noopener">LinkedIn</a></span></li>
+            </ul>
         </div>
         <audio id="mySound" src="sound.mp3" preload="none"></audio>
     </main>
@@ -237,11 +239,20 @@
         </div>
     </div>
 
+    <!-- Visitor statistics without cookies: https://visuology.goatcounter.com -->
+    <script data-goatcounter="https://visuology.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
     <script>
+        // Count a click or an opened pop-up in the visitor statistics (once they've loaded)
+        function track(name) {
+            if (window.goatcounter && window.goatcounter.count) {
+                window.goatcounter.count({ path: name, title: name, event: true });
+            }
+        }
 
         // What the megaphone says when someone clicks the photo, one at a time.
         // A line can be plain text, or { text, url } to make the bubble a link.
-        // '{kunstavond}' becomes the date of the next Kunstavond, and is said first.
+        // '{kunstavond}' becomes the date of the next Kunstavond and is said first; the coffee invitation comes second.
         var coffeeMail = 'mailto:mail@visuology.nl?subject=' + encodeURIComponent('Coffee?') +
             '&body=' + encodeURIComponent('Hi Jeroen,\n\nI found your website and would love to meet for a coffee. When suits you?\n\n');
         var megaphoneLines = [
@@ -267,6 +278,7 @@
             sound.currentTime = 0;
             sound.play();
             speak();
+            track('Megaphone');
 
             if (reduceMotion.matches) return;
 
@@ -309,10 +321,13 @@
                     var tmp = lineOrder[i]; lineOrder[i] = lineOrder[j]; lineOrder[j] = tmp;
                 }
                 if (firstRound) {
-                    // Start with the next Kunstavond
+                    // Start with the next Kunstavond, then the coffee invitation
+                    var coffeeIndex = megaphoneLines.findIndex(function(line) { return line.url === coffeeMail; });
                     var kunstavondIndex = megaphoneLines.findIndex(function(line) { return (line.text || line) === '{kunstavond}'; });
-                    var k = lineOrder.indexOf(kunstavondIndex);
-                    if (k > 0) lineOrder.unshift(lineOrder.splice(k, 1)[0]);
+                    [coffeeIndex, kunstavondIndex].forEach(function(index) {
+                        var k = lineOrder.indexOf(index);
+                        if (k > 0) lineOrder.unshift(lineOrder.splice(k, 1)[0]);
+                    });
                     firstRound = false;
                 }
             }
@@ -383,6 +398,22 @@
             return 'Next Kunstavond: ' + date.replace(',', '') + ' in the Witte de With Quarter!';
         }
 
+        // Count clicks on links that lead somewhere else
+        document.addEventListener('click', function(event) {
+            var link = event.target.closest('a');
+            if (!link) return;
+            var href = link.getAttribute('href') || '';
+            if (href.charAt(0) === '#') return;
+            if (link.id === 'contact-link' && window.matchMedia('(hover: hover) and (pointer: fine)').matches) return; // counted as the QR pop-up
+            var name;
+            if (href === coffeeMail) name = 'Coffee invite';
+            else if (link.closest('#speech') && /dekunstavond/.test(href)) name = 'Kunstavond (megaphone)';
+            else if (href.indexOf('mailto:') === 0) name = 'Email';
+            else if (/\.vcf$/.test(href)) name = 'Save contact (download)';
+            else { try { name = 'Link: ' + new URL(href, location.href).hostname.replace(/^www\./, ''); } catch (e) { return; } }
+            track(name);
+        }, true);
+
         // Save my contact: phones download the card, computers show a QR code to scan
         document.getElementById('contact-link').addEventListener('click', function(event) {
             if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -411,7 +442,9 @@
         var openOverlay = null;
         var openedFrom = null;
 
+        var popupNames = { 'about-popup': 'About me', 'work-popup': 'Along the way', 'contact-popup': 'Save contact (QR code)' };
         function openPopup(overlay, trigger) {
+            track('Open: ' + (popupNames[overlay.id] || overlay.id));
             openOverlay = overlay;
             openedFrom = trigger;
             overlay.classList.add('show');

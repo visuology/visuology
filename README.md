@@ -35,6 +35,9 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 | `og-image-800.jpg` | The image used in link previews |
 | `sound.mp3` | The sound played when the photo is clicked |
 | `favicon*`, `apple-touch-icon.png`, `android-chrome-*`, `mstile-150x150.png`, `site.webmanifest`, `browserconfig.xml` | Browser and home-screen icons |
+| `jeroen-laven.vcf` / `qr-contact.svg` | The contact card (with photo) and the QR code shown on computers |
+| `404.html` | The "page not found" page |
+| `robots.txt` / `sitemap.xml` | Point search engines to the page |
 | `CNAME` | Points GitHub Pages at the `visuology.nl` domain |
 | `docs/` | Screenshots for this README |
 
@@ -67,6 +70,10 @@ The entries are a plain HTML list in `index.html` (search for `id="work-list"`),
 ```
 
 The description line is optional. Leave out `data-year` and the year text if there's no date.
+
+### Visitor statistics
+
+[GoatCounter](https://www.goatcounter.com) counts visits without cookies, at https://visuology.goatcounter.com. Besides page views it counts opened pop-ups, megaphone clicks, the coffee invitation, Kunstavond, email, saving the contact card and outgoing links (look for `track(` in `index.html`).
 
 ### Search engines
 

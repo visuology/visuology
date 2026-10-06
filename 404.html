@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page not found – Jeroen Lavèn</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="/style.css?v=15">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <meta name="color-scheme" content="light dark">
+    <style>
+        .not-found {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 16px;
+        }
+        .not-found .speech {
+            position: relative;
+            margin-bottom: 18px;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            --tail-x: 40px;
+        }
+        .not-found .photo {
+            width: 150px;
+            height: 150px;
+        }
+        .not-found h1 {
+            margin: 24px 0 6px;
+        }
+        .not-found p {
+            margin: 0 0 18px;
+        }
+        .not-found .home {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+    <main class="not-found">
+        <div class="speech" aria-hidden="true">Oops, wrong street!</div>
+        <picture>
+            <source srcset="/jeroen-300.webp" type="image/webp">
+            <img src="/jeroen-300.jpg" alt="Portrait of Jeroen Lavèn" class="photo" width="150" height="150">
+        </picture>
+        <h1>Page not found</h1>
+        <p>This page doesn't exist (anymore).</p>
+        <a class="home" href="/">← Back to visuology.nl</a>
+    </main>
+
+    <!-- Visitor statistics without cookies: counts which missing pages people end up on -->
+    <script data-goatcounter="https://visuology.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

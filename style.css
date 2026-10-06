@@ -79,13 +79,24 @@ h1 {
     object-fit: cover;
 }
 
-/* More room between the lines, so the emoji can breathe */
-.content p {
+/* The list on the homepage: room between the lines so the emoji can breathe,
+   and long lines wrap under the text instead of under the emoji */
+.links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     line-height: 1.75;
 }
 
-.content p:last-child {
-    margin-bottom: 0; /* So the text block ends where the last line ends */
+.links li {
+    display: flex;
+    gap: 0.4em;
+}
+
+.links-emoji {
+    flex: none;
+    width: 1.3em;
+    text-align: center;
 }
 
 .wave {

@@ -64,11 +64,48 @@ h1 {
     appearance: none;
     -webkit-tap-highlight-color: transparent; /* No grey square on tap in iOS */
     border-radius: 50%;
-    overflow: hidden; /* Clip anything square to the circle */
+    position: relative;
+    font: inherit; /* So the "Click me" label uses the page font */
+    color: inherit;
     flex-shrink: 0; /* Never let long text squeeze the photo into an oval */
     line-height: 0;
     margin-right: 20px;
     cursor: pointer;
+}
+
+.photo {
+    transition: transform 0.25s ease;
+}
+
+/* On computers: the photo grows a little and says "Click me" on hover */
+.photo-btn::after {
+    content: "Click me \1F4E3";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translate(-50%, 100%);
+    padding: 3px 10px;
+    border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-radius: 999px;
+    background: var(--popup-bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.85em;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .photo-btn:hover .photo {
+        transform: scale(1.03);
+    }
+
+    .photo-btn:hover::after {
+        opacity: 1;
+    }
 }
 
 .photo {
@@ -579,6 +616,12 @@ html.popup-open body {
     .speech {
         transform: none;
         transition: opacity 0.2s ease, visibility 0.2s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photo-btn:hover .photo {
+        transform: none;
     }
 }
 

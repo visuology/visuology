@@ -22,7 +22,7 @@
     <meta property="profile:last_name" content="Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=17"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=19"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -276,19 +276,28 @@
 
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-        function playSoundAndAnimate() {
-            var sound = document.getElementById('mySound');
-            var waves = document.querySelectorAll('.wave');
-            var rect = document.querySelector('.photo').getBoundingClientRect();
+        // The hello sound plays on the first tap of a visit only, a bit softer
+        var soundPlayed = false;
 
-            sound.currentTime = 0;
-            sound.play();
+        function playSoundAndAnimate() {
+            if (!soundPlayed) {
+                var sound = document.getElementById('mySound');
+                sound.volume = 0.6;
+                sound.currentTime = 0;
+                sound.play();
+                soundPlayed = true;
+            }
             speak();
             track('Megaphone');
+            try { localStorage.setItem('megaphoneFound', '1'); } catch (e) {}
+            pulseWaves(3, 7);
+        }
 
+        // Waves rippling out from the photo
+        function pulseWaves(count, seconds) {
             if (reduceMotion.matches) return;
-
-            waves.forEach(function(wave, index) {
+            var rect = document.querySelector('.photo').getBoundingClientRect();
+            Array.prototype.slice.call(document.querySelectorAll('.wave'), 0, count).forEach(function(wave, index) {
                 // Immediately remove any existing animation
                 wave.style.animation = 'none';
 
@@ -300,7 +309,7 @@
 
                 // Use setTimeout to reapply the animation
                 setTimeout(function() {
-                    wave.style.animation = 'waveAnimation 7s ease-out ' + (index * 0.5) + 's forwards';
+                    wave.style.animation = 'waveAnimation ' + seconds + 's ease-out ' + (index * 0.5) + 's forwards';
                 }, 50); // slight delay to ensure the reset is registered
             });
         }
@@ -436,11 +445,22 @@
             else if (/(^|\.)(linkedin\.com|lnkd\.in)$/.test(from)) { greeting = 'Hi from LinkedIn! \ud83d\udc4b'; source = 'LinkedIn'; }
             else if (/(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|ecosia\.org)$/.test(from)) { greeting = 'Found me! \ud83d\udd0e'; source = 'search'; }
             if (via) history.replaceState(null, '', location.pathname + location.hash); // keep the address clean
-            if (!greeting) return;
+            if (greeting) {
+                setTimeout(function() {
+                    if (!openOverlay) speak({ text: greeting });
+                    track('Arrived from: ' + source);
+                }, 900);
+            }
+
+            // First-time visitors get a hint that the photo can be tapped (until they've tapped it once)
+            var found = false;
+            try { found = localStorage.getItem('megaphoneFound') === '1'; } catch (e) {}
+            if (found) return;
             setTimeout(function() {
-                if (!openOverlay) speak({ text: greeting });
-                track('Arrived from: ' + source);
-            }, 900);
+                if (soundPlayed || openOverlay || speech.classList.contains('show')) return;
+                pulseWaves(1, 2.5);
+                speak({ text: 'Psst\u2026 tap me! \ud83d\udce3' });
+            }, greeting ? 6500 : 2500);
         })();
 
         // Count clicks on links that lead somewhere else

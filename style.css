@@ -505,6 +505,17 @@ html.popup-open body {
     transform: rotate(45deg);
 }
 
+/* A bubble with a link can be clicked */
+.speech.has-link.show {
+    pointer-events: auto;
+}
+
+.speech a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
 /* When the bubble sits below the megaphone, the tail points up */
 .speech.below {
     transform-origin: var(--tail-x) 0;

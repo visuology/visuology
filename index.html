@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=12"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=13"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -138,15 +138,18 @@
         ];
 
         // What the megaphone says when someone clicks the photo, one at a time.
+        // A line can be plain text, or { text, url } to make the bubble a link.
         // '{kunstavond}' becomes the date of the next Kunstavond, and is said first.
+        var coffeeMail = 'mailto:mail@visuology.nl?subject=' + encodeURIComponent('Coffee?') +
+            '&body=' + encodeURIComponent('Hi Jeroen,\n\nI found your website and would love to meet for a coffee. When suits you?\n\n');
         var megaphoneLines = [
-            '{kunstavond}',
+            { text: '{kunstavond}', url: 'https://www.dekunstavond.nl' },
             'Melly\u2019s building was a girls\u2019 school in the 1870s.',
             'The Witte de With quarter used to be the city\u2019s botanical garden.',
             'Melly is named after Ken Lum\u2019s artwork \u201cMelly Shum Hates Her Job\u201d.',
             'Started here as an intern in 2016. Still here!',
-            'Coffee? I know the best spots in the quarter.',
-            'Say hi: mail@visuology.nl'
+            { text: 'Always up for a coffee and a good conversation. Invite me! \u2615', url: coffeeMail },
+            { text: 'Say hi: mail@visuology.nl', url: 'mailto:mail@visuology.nl' }
         ];
 
         // Months without a Kunstavond, e.g. '2027-08' for a summer break
@@ -205,13 +208,15 @@
                 }
                 if (firstRound) {
                     // Start with the next Kunstavond
-                    var k = lineOrder.indexOf(megaphoneLines.indexOf('{kunstavond}'));
+                    var kunstavondIndex = megaphoneLines.findIndex(function(line) { return (line.text || line) === '{kunstavond}'; });
+                    var k = lineOrder.indexOf(kunstavondIndex);
                     if (k > 0) lineOrder.unshift(lineOrder.splice(k, 1)[0]);
                     firstRound = false;
                 }
             }
             var line = megaphoneLines[lineOrder.shift()];
-            return line === '{kunstavond}' ? kunstavondLine() : line;
+            if (typeof line === 'string') line = { text: line };
+            return { text: line.text === '{kunstavond}' ? kunstavondLine() : line.text, url: line.url };
         }
         function speak() {
             var rect = document.querySelector('.photo').getBoundingClientRect();
@@ -219,7 +224,18 @@
             var mouthX = rect.left + rect.width * 0.14;
             var mouthY = rect.top + rect.height * 0.24;
             speech.classList.remove('show');
-            speech.textContent = nextLine();
+            var line = nextLine();
+            speech.textContent = '';
+            if (line.url) {
+                var link = document.createElement('a');
+                link.href = line.url;
+                link.textContent = line.text;
+                if (/^https?:/.test(line.url)) { link.target = '_blank'; link.rel = 'noopener'; }
+                speech.appendChild(link);
+            } else {
+                speech.textContent = line.text;
+            }
+            speech.classList.toggle('has-link', !!line.url);
             var w = speech.offsetWidth;
             var h = speech.offsetHeight;
             var left = Math.min(Math.max(mouthX - w + 28, 8), window.innerWidth - w - 8);
@@ -231,9 +247,17 @@
             speech.style.setProperty('--tail-x', Math.min(Math.max(mouthX - left - 6, 14), w - 26) + 'px');
             speech.offsetHeight; // restart the pop-in animation
             speech.classList.add('show');
-            clearTimeout(speechTimer);
-            speechTimer = setTimeout(function() { speech.classList.remove('show'); }, 4500);
+            hideSpeechAfter(line.url ? 7000 : 4500); // a little longer when there's something to click
         }
+        function hideSpeechAfter(ms) {
+            clearTimeout(speechTimer);
+            speechTimer = setTimeout(function() { speech.classList.remove('show'); }, ms);
+        }
+        // Stay open while someone hovers over the bubble or tabs to its link
+        speech.addEventListener('mouseenter', function() { clearTimeout(speechTimer); });
+        speech.addEventListener('focusin', function() { clearTimeout(speechTimer); });
+        speech.addEventListener('mouseleave', function() { hideSpeechAfter(2500); });
+        speech.addEventListener('focusout', function() { hideSpeechAfter(2500); });
         window.addEventListener('resize', function() { speech.classList.remove('show'); });
 
         // Next Kunstavond: the first Friday of the month, 18:00-21:00 Rotterdam time

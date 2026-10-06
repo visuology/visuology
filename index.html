@@ -251,10 +251,10 @@
                 if (++m > 12) { m = 1; y++; }
             }
             if (isThisMonth && now.day === firstFriday) {
-                return now.hour < 18 ? 'Kunstavond tonight, 18:00\u201321:00 on the Witte de With!' : 'Kunstavond is on now, until 21:00. Come by!';
+                return now.hour < 18 ? 'Kunstavond tonight in the Witte de With Quarter!' : 'Kunstavond is on now in the Witte de With Quarter. Come by!';
             }
             var date = new Date(Date.UTC(y, m - 1, firstFriday, 12)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
-            return 'Next Kunstavond: ' + date.replace(',', '') + ', 18:00\u201321:00 on the Witte de With!';
+            return 'Next Kunstavond: ' + date.replace(',', '') + ' in the Witte de With Quarter!';
         }
 
         // Save my contact: phones download the card, computers show a QR code to scan

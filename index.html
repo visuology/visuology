@@ -22,7 +22,7 @@
     <meta property="profile:last_name" content="Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=15"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=17"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -90,10 +90,10 @@
                 <li><span class="links-emoji" aria-hidden="true">🏙️</span><span>Chair, <a href="https://wdwkwartier.nl" target="_blank" rel="noopener">BIZ Witte de Withkwartier</a></span></li>
                 <li><span class="links-emoji" aria-hidden="true">🌙</span><span>Board Member, <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener">Kunstblock</a></span></li>
                 <li><span class="links-emoji" aria-hidden="true">📍</span><span>Rotterdam, the Netherlands</span></li>
-                <li><span class="links-emoji" aria-hidden="true">🤓</span><span>More <a href="#about" id="about-me-link" data-popup="about-popup" aria-haspopup="dialog">about me</a></span></li>
-                <li><span class="links-emoji" aria-hidden="true">🧭</span><span><a href="#work" id="work-link" data-popup="work-popup" aria-haspopup="dialog">Along the way</a></span></li>
+                <li class="screen-only"><span class="links-emoji" aria-hidden="true">🤓</span><span>More <a href="#about" id="about-me-link" data-popup="about-popup" aria-haspopup="dialog">about me</a></span></li>
+                <li class="screen-only"><span class="links-emoji" aria-hidden="true">🧭</span><span><a href="#work" id="work-link" data-popup="work-popup" aria-haspopup="dialog">Along the way</a></span></li>
                 <li><span class="links-emoji" aria-hidden="true">💌</span><span><a href="mailto:mail@visuology.nl">Email me</a></span></li>
-                <li><span class="links-emoji" aria-hidden="true">📇</span><span><a href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf" id="contact-link" aria-haspopup="dialog">Save my contact</a></span></li>
+                <li class="screen-only"><span class="links-emoji" aria-hidden="true">📇</span><span><a href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf" id="contact-link" aria-haspopup="dialog">Save my contact</a></span></li>
                 <li><span class="links-emoji" aria-hidden="true">🔗</span><span><a href="https://www.instagram.com/visuology_nl" target="_blank" rel="noopener">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank" rel="noopener">LinkedIn</a></span></li>
             </ul>
         </div>
@@ -123,6 +123,7 @@
     <div class="popup-overlay" id="about-popup">
         <div class="popup-content" role="dialog" aria-modal="true" aria-label="About Jeroen Lavèn">
             <button type="button" class="close-btn" aria-label="Close">&times;</button>
+            <h2 class="print-only">About</h2>
             <p class="popup-scroll" tabindex="0">Jeroen Lavèn (NL, 1990) serves as the Community Relations & Operations Manager at Kunstinstituut Melly, where his journey began as an intern in PR & Communication in 2016. Over the years, he progressed through various roles, including Social Media and Website Assistant, PR & Social Media Editor, and PR & Communications Manager, ultimately taking on his current position. He manages and maintains the building, coordinates exhibitions, and fosters community relations, overseeing a dedicated team and working closely with tenants and external stakeholders to create a dynamic cultural environment.<br><br>As chair of BIZ Witte de Withkwartier, Jeroen works alongside fellow entrepreneurs and stakeholders to strengthen the district's economic vitality and shared public space. Together, they aim to keep the Witte de Withkwartier a vibrant, inclusive, and welcoming destination — for businesses, residents, and visitors alike.<br><br>Additionally, Jeroen is a Board Member at Kunstblock, a collective of contemporary art institutions in Rotterdam's art quarter. His seven years of experience as the PR & Communications Coordinator for Kunstblock have provided him with valuable insights into promoting collaborative efforts and enhancing the visibility of cultural events.<br><br>Through his company, Visuology, Jeroen specializes in contemporary digital communications, aiming to make art more accessible and engaging.</p>
         </div>
     </div>
@@ -239,6 +240,9 @@
         </div>
     </div>
 
+    <!-- Only on paper / PDF: where to find the latest version -->
+    <p class="print-only print-footer">visuology.nl · mail@visuology.nl · linkedin.com/in/visuology</p>
+
     <!-- Visitor statistics without cookies: https://visuology.goatcounter.com -->
     <script data-goatcounter="https://visuology.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
@@ -252,11 +256,13 @@
 
         // What the megaphone says when someone clicks the photo, one at a time.
         // A line can be plain text, or { text, url } to make the bubble a link.
-        // '{kunstavond}' becomes the date of the next Kunstavond and is said first; the coffee invitation comes second.
+        // '{kunstavond}' becomes the date of the next Kunstavond and is said first, then the coffee invitation,
+        // then '{time}': a line that fits the time of day in Rotterdam.
         var coffeeMail = 'mailto:mail@visuology.nl?subject=' + encodeURIComponent('Coffee?') +
             '&body=' + encodeURIComponent('Hi Jeroen,\n\nI found your website and would love to meet for a coffee. When suits you?\n\n');
         var megaphoneLines = [
             { text: '{kunstavond}', url: 'https://www.dekunstavond.nl' },
+            '{time}',
             'Melly\u2019s building was a girls\u2019 school in the 1870s.',
             'The Witte de With quarter used to be the city\u2019s botanical garden.',
             'Melly is named after Ken Lum\u2019s artwork \u201cMelly Shum Hates Her Job\u201d.',
@@ -321,10 +327,11 @@
                     var tmp = lineOrder[i]; lineOrder[i] = lineOrder[j]; lineOrder[j] = tmp;
                 }
                 if (firstRound) {
-                    // Start with the next Kunstavond, then the coffee invitation
+                    // Start with the next Kunstavond, then the coffee invitation, then the time of day
                     var coffeeIndex = megaphoneLines.findIndex(function(line) { return line.url === coffeeMail; });
                     var kunstavondIndex = megaphoneLines.findIndex(function(line) { return (line.text || line) === '{kunstavond}'; });
-                    [coffeeIndex, kunstavondIndex].forEach(function(index) {
+                    var timeIndex = megaphoneLines.indexOf('{time}');
+                    [timeIndex, coffeeIndex, kunstavondIndex].forEach(function(index) {
                         var k = lineOrder.indexOf(index);
                         if (k > 0) lineOrder.unshift(lineOrder.splice(k, 1)[0]);
                     });
@@ -333,15 +340,16 @@
             }
             var line = megaphoneLines[lineOrder.shift()];
             if (typeof line === 'string') line = { text: line };
-            return { text: line.text === '{kunstavond}' ? kunstavondLine() : line.text, url: line.url };
+            var text = line.text === '{kunstavond}' ? kunstavondLine() : line.text === '{time}' ? timeLine() : line.text;
+            return { text: text, url: line.url };
         }
-        function speak() {
+        function speak(line) {
             var rect = document.querySelector('.photo').getBoundingClientRect();
             // Where the megaphone's opening is in the photo
             var mouthX = rect.left + rect.width * 0.14;
             var mouthY = rect.top + rect.height * 0.24;
             speech.classList.remove('show');
-            var line = nextLine();
+            line = line || nextLine();
             speech.textContent = '';
             if (line.url) {
                 var link = document.createElement('a');
@@ -377,11 +385,30 @@
         speech.addEventListener('focusout', function() { hideSpeechAfter(2500); });
         window.addEventListener('resize', function() { speech.classList.remove('show'); });
 
-        // Next Kunstavond: the first Friday of the month, 18:00-21:00 Rotterdam time
-        function kunstavondLine() {
+        // The current date and time in Rotterdam, wherever the visitor is
+        function rotterdamNow() {
             var now = {};
             new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', hourCycle: 'h23' })
                 .formatToParts(new Date()).forEach(function(p) { now[p.type] = +p.value; });
+            now.weekday = new Date(Date.UTC(now.year, now.month - 1, now.day)).getUTCDay(); // 0 = Sunday
+            return now;
+        }
+
+        // A line that fits the time of day in Rotterdam
+        function timeLine() {
+            var now = rotterdamNow(), h = now.hour, weekend = now.weekday === 0 || now.weekday === 6;
+            if (now.weekday === 5 && h >= 14 && h < 18) return 'Almost weekend! \ud83c\udf89';
+            if (weekend && h >= 9 && h < 18) return 'Happy weekend! Out and about in the quarter?';
+            if (h >= 5 && h < 11) return 'Goedemorgen! Coffee first \u2615';
+            if (h >= 11 && h < 14) return 'Lunchtime on the Witte de With \ud83e\udd6a';
+            if (h >= 14 && h < 18) return 'Good afternoon from Rotterdam! \ud83d\udc4b';
+            if (h >= 18 && h < 23) return 'Good evening! The quarter is buzzing now. \u2728';
+            return 'Working late? Me too. \ud83c\udf19';
+        }
+
+        // Next Kunstavond: the first Friday of the month, 18:00-21:00 Rotterdam time
+        function kunstavondLine() {
+            var now = rotterdamNow();
             var y = now.year, m = now.month, firstFriday, isThisMonth;
             for (var tries = 0; tries < 24; tries++) {
                 firstFriday = 1 + (5 - new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 7) % 7;
@@ -398,6 +425,23 @@
             var date = new Date(Date.UTC(y, m - 1, firstFriday, 12)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
             return 'Next Kunstavond: ' + date.replace(',', '') + ' in the Witte de With Quarter!';
         }
+
+        // Greet visitors depending on where they came from
+        (function() {
+            var via = new URLSearchParams(location.search).get('via');
+            var from = '';
+            try { from = new URL(document.referrer).hostname; } catch (e) {}
+            var greeting = null, source = null;
+            if (via === 'card') { greeting = 'Nice to meet you in person! \ud83e\udd1d'; source = 'contact card'; }
+            else if (/(^|\.)(linkedin\.com|lnkd\.in)$/.test(from)) { greeting = 'Hi from LinkedIn! \ud83d\udc4b'; source = 'LinkedIn'; }
+            else if (/(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|ecosia\.org)$/.test(from)) { greeting = 'Found me! \ud83d\udd0e'; source = 'search'; }
+            if (via) history.replaceState(null, '', location.pathname + location.hash); // keep the address clean
+            if (!greeting) return;
+            setTimeout(function() {
+                if (!openOverlay) speak({ text: greeting });
+                track('Arrived from: ' + source);
+            }, 900);
+        })();
 
         // Count clicks on links that lead somewhere else
         document.addEventListener('click', function(event) {

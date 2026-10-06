@@ -22,6 +22,9 @@ The personal website of **Jeroen Lavèn**: a one-page link-in-bio site with a sh
 - **Click the photo** to hear a sound and see the wave animation (skipped for visitors who prefer reduced motion), while a speech bubble pops out of the megaphone with a short line. Edit the lines in `megaphoneLines` at the top of the script; a line written as `{ text: '…', url: '…' }` turns the bubble into a link (used for Kunstavond, the coffee invitation and email).
 - **Next Kunstavond:** one of the megaphone's lines (and always the first) gives the date of the next Kunstavond (first Friday of the month, 18:00–21:00), worked out automatically, or says "tonight" / "on now" on the day. Add months without a Kunstavond to `kunstavondSkip`, e.g. `'2027-08'`.
 - **Save my contact:** phones download a contact card (`jeroen-laven.vcf`, with photo); computers show a QR code (`qr-contact.svg`) to scan with a phone. After changing your details, update both files.
+- **Greets visitors** depending on where they came from: "Hi from LinkedIn! 👋", "Found me! 🔎" from search engines, and "Nice to meet you in person! 🤝" for people who tap the website in your saved contact card (it links to `?via=card`).
+- **Time-aware megaphone:** one of the lines fits the time of day in Rotterdam (morning coffee, lunchtime, Friday afternoon, weekend, evening, late night). Edit them in `timeLine()`.
+- **Print as CV:** printing the page or saving it as PDF gives a clean CV with your roles, the about text and the full "Along the way" list, without buttons or pop-ups.
 - **Accessible:** the photo and close buttons are real buttons, the pop-up is announced as a dialog, focus moves into it and back, and <kbd>Esc</kbd> closes it.
 - **Good link previews and search results:** a meta description, Open Graph tags for LinkedIn, WhatsApp and Slack, and `Person` structured data for Google.
 

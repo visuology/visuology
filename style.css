@@ -581,3 +581,174 @@ html.popup-open body {
         transition: opacity 0.2s ease, visibility 0.2s;
     }
 }
+
+/* Only shown on paper / PDF */
+.print-only {
+    display: none;
+}
+
+/* Printing or saving as PDF gives a one-page CV instead of a screenshot */
+@media print {
+    @page {
+        margin: 16mm 18mm;
+    }
+
+    :root {
+        --bg: #fff;
+        --text: #000;
+        --popup-bg: #fff;
+    }
+
+    html, body {
+        display: block;
+        height: auto;
+        background: #fff;
+        color: #000;
+        font-size: 10.5pt;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    /* Things that only make sense on screen */
+    .screen-only,
+    .wave,
+    .speech,
+    .close-btn,
+    .view-toggle,
+    .timeline,
+    #contact-popup,
+    audio {
+        display: none !important;
+    }
+
+    /* Name, photo and roles at the top */
+    .container {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        margin: 0 0 8mm;
+        padding: 0;
+        text-align: left;
+    }
+
+    .photo-btn {
+        margin: 0 6mm 0 0 !important;
+    }
+
+    .photo {
+        width: 32mm !important;
+        height: 32mm !important;
+    }
+
+    .content {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 20pt;
+        margin-bottom: 2mm;
+    }
+
+    .links {
+        line-height: 1.5;
+    }
+
+    /* Show where the contact links go */
+    .links a[href^="mailto:"]::after {
+        content: " (mail@visuology.nl)";
+    }
+
+    .links a[href*="instagram.com"]::after {
+        content: " (instagram.com/visuology_nl)";
+    }
+
+    .links a[href*="linkedin.com"]::after {
+        content: " (linkedin.com/in/visuology)";
+    }
+
+    /* The pop-ups become sections on the page */
+    .popup-overlay {
+        position: static;
+        display: block;
+        height: auto;
+        padding: 0;
+        opacity: 1;
+        visibility: visible;
+        background: none;
+        transition: none;
+    }
+
+    .popup-content {
+        display: block;
+        max-width: none;
+        max-height: none;
+        padding: 0;
+        margin: 0 0 6mm;
+        border-radius: 0;
+        box-shadow: none;
+        transform: none;
+        background: none;
+    }
+
+    .popup-header {
+        display: block;
+        margin: 0;
+    }
+
+    .popup-content h2 {
+        font-size: 12pt;
+        font-weight: 600;
+        margin: 0 0 2mm;
+        padding-bottom: 1mm;
+        border-bottom: 0.5pt solid #000;
+    }
+
+    .popup-scroll {
+        overflow: visible !important;
+        max-height: none !important;
+    }
+
+    .popup-content p {
+        line-height: 1.45;
+    }
+
+    /* "Along the way" as a plain list, always visible */
+    .work-list,
+    .work-list[hidden] {
+        display: block !important;
+    }
+
+    .work-list li {
+        border-top: 0 !important;
+        break-inside: avoid;
+    }
+
+    .list-link {
+        padding: 1.5mm 0;
+        grid-template-columns: 12mm 1fr;
+    }
+
+    .list-source,
+    .list-desc,
+    .list-year {
+        opacity: 1;
+        color: #444;
+    }
+
+    .print-footer {
+        margin-top: 6mm;
+        padding-top: 2mm;
+        border-top: 0.5pt solid #000;
+        font-size: 9pt;
+        color: #444;
+    }
+
+    a {
+        color: inherit;
+        background: none !important;
+    }
+}

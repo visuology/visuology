@@ -388,7 +388,8 @@
                 var key = y + '-' + (m < 10 ? '0' : '') + m;
                 isThisMonth = y === now.year && m === now.month;
                 var stillToCome = !isThisMonth || now.day < firstFriday || (now.day === firstFriday && now.hour < 21);
-                if (stillToCome && kunstavondSkip.indexOf(key) === -1) break;
+                var newYearsDay = m === 1 && firstFriday === 1; // no Kunstavond on New Year's Day
+                if (stillToCome && !newYearsDay && kunstavondSkip.indexOf(key) === -1) break;
                 if (++m > 12) { m = 1; y++; }
             }
             if (isThisMonth && now.day === firstFriday) {

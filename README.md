@@ -53,13 +53,25 @@ python3 -m http.server 8000
 
 ### Adding something to "Along the way"
 
-Near the top of the `<script>` in `index.html` is a `projects` list. Add one line per item, newest first:
+The entries are a plain HTML list in `index.html` (search for `id="work-list"`), so search engines can read them. The timeline is built from this list. Copy an `<li>` and fill it in, newest first:
 
-```js
-{ year: 2025, emoji: '🏛️', title: 'Opened the exhibition …', description: 'One short sentence.', url: 'https://…', source: 'NRC' },
+```html
+<li data-year="2026">
+    <a class="list-link" href="https://…" target="_blank" rel="noopener">
+        <span class="list-year">2026</span>
+        <span class="list-title"><span class="list-emoji">🏛️</span> Title of the article or project</span>
+        <span class="list-desc">One short sentence.</span>
+        <span class="list-source">Source name ↗</span>
+    </a>
+</li>
 ```
 
-`year`, `description` and `source` are optional. Without a `source`, the card shows the website's name, such as `nrc.nl`.
+The description line is optional. Leave out `data-year` and the year text if there's no date.
+
+### Search engines
+
+- The page title, description and `ProfilePage` structured data (in the `<head>`) describe who you are; update them when your role changes.
+- `robots.txt` and `sitemap.xml` point search engines to the page. Update `lastmod` in `sitemap.xml` after bigger changes.
 
 ### Replacing the photo
 

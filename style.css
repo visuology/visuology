@@ -449,6 +449,7 @@ html.popup-open body {
 .list-year { opacity: 0.6; font-variant-numeric: tabular-nums; }
 .list-title { grid-column: 2; }
 .list-source { grid-column: 2; font-size: 0.85em; opacity: 0.7; }
+.list-desc { grid-column: 2; font-size: 0.85em; opacity: 0.75; }
 
 /* Respect visitors who prefer less motion: everything sharp, nothing moves */
 @media (prefers-reduced-motion: reduce) {

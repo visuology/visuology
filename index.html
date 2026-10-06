@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Portrait of Jeroen Lavèn">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="style.css?v=10"> <!-- Bump ?v= after editing style.css so browsers reload it -->
+    <link rel="stylesheet" href="style.css?v=11"> <!-- Bump ?v= after editing style.css so browsers reload it -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -60,9 +60,11 @@
             <br>🏙️ Board Member, <a href="https://wdwkwartier.nl" target="_blank" rel="noopener">BIZ Witte de Withkwartier</a>
             <br>🌙 Board Member, <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener">Kunstblock</a>
             <br>📍 Rotterdam, the Netherlands
+            <br>🎨 <a href="https://www.dekunstavond.nl" target="_blank" rel="noopener" id="kunstavond">Kunstavond: every first Friday</a>
             <br>🤓 More <a href="#about" id="about-me-link" data-popup="about-popup" aria-haspopup="dialog">about me</a>
             <br>🧭 <a href="#work" id="work-link" data-popup="work-popup" aria-haspopup="dialog">Along the way</a>
             <br>💌 <a href="mailto:mail@visuology.nl">Email me</a>
+            <br>📇 <a href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf" id="contact-link" aria-haspopup="dialog">Save my contact</a>
             <br>🔗 <a href="https://www.instagram.com/visuology_nl" target="_blank" rel="noopener">Instagram</a> / <a href="https://www.linkedin.com/in/visuology/" target="_blank" rel="noopener">LinkedIn</a></p>
         </div>
         <audio id="mySound" src="sound.mp3" preload="none"></audio>
@@ -70,6 +72,22 @@
     <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
     <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
     <div class="wave" aria-hidden="true" style="pointer-events: none;"></div>
+
+    <!-- What the megaphone says when the photo is clicked -->
+    <div class="speech" id="speech" role="status" aria-live="polite"></div>
+
+    <!-- Save my contact pop-up (computers; phones download the card directly) -->
+    <div class="popup-overlay" id="contact-popup">
+        <div class="popup-content contact-popup" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+            <div class="popup-header">
+                <h2 id="contact-title">Save my contact</h2>
+                <button type="button" class="close-btn" aria-label="Close">&times;</button>
+            </div>
+            <img src="qr-contact.svg" class="qr" width="220" height="220" alt="QR code with Jeroen Lavèn's contact details">
+            <p class="qr-hint">Scan with your phone's camera to add me to your contacts.</p>
+            <a class="qr-download" href="jeroen-laven.vcf" download="Jeroen Lavèn.vcf">Or download the contact card</a>
+        </div>
+    </div>
 
     <!-- About me pop-up -->
     <div class="popup-overlay" id="about-popup">
@@ -120,6 +138,20 @@
             { year: 2021, emoji: '🎬', title: 'A new visual identity for Kunstinstituut Melly', description: 'I led the project for the institute\u2019s new identity in 2020\u20132021. A short documentary with all the designers.', url: 'https://www.youtube.com/watch?v=LUtSD5RvjFM', source: 'YouTube' }
         ];
 
+        // What the megaphone says when someone clicks the photo, one at a time
+        var megaphoneLines = [
+            'Kunstavond: every first Friday, 18:00\u201321:00 on the Witte de With!',
+            'Melly\u2019s building was a girls\u2019 school in the 1870s.',
+            'The Witte de With quarter used to be the city\u2019s botanical garden.',
+            'Melly is named after Ken Lum\u2019s artwork \u201cMelly Shum Hates Her Job\u201d.',
+            'Started here as an intern in 2016. Still here!',
+            'Coffee? I know the best spots in the quarter.',
+            'Say hi: mail@visuology.nl'
+        ];
+
+        // Months without a Kunstavond, e.g. '2027-08' for a summer break
+        var kunstavondSkip = [];
+
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
         function playSoundAndAnimate() {
@@ -129,6 +161,7 @@
 
             sound.currentTime = 0;
             sound.play();
+            speak();
 
             if (reduceMotion.matches) return;
 
@@ -157,6 +190,71 @@
         });
 
         document.getElementById('photo-btn').addEventListener('click', playSoundAndAnimate);
+
+        // A speech bubble from the megaphone in the photo
+        var speech = document.getElementById('speech');
+        var lineOrder = [];
+        var speechTimer = null;
+        function nextLine() {
+            if (!lineOrder.length) {
+                lineOrder = megaphoneLines.map(function(_, i) { return i; });
+                for (var i = lineOrder.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var tmp = lineOrder[i]; lineOrder[i] = lineOrder[j]; lineOrder[j] = tmp;
+                }
+            }
+            return megaphoneLines[lineOrder.shift()];
+        }
+        function speak() {
+            var rect = document.querySelector('.photo').getBoundingClientRect();
+            // Where the megaphone's opening is in the photo
+            var mouthX = rect.left + rect.width * 0.14;
+            var mouthY = rect.top + rect.height * 0.24;
+            speech.classList.remove('show');
+            speech.textContent = nextLine();
+            var w = speech.offsetWidth;
+            var h = speech.offsetHeight;
+            var left = Math.min(Math.max(mouthX - w + 28, 8), window.innerWidth - w - 8);
+            speech.style.left = (left + window.scrollX) + 'px';
+            speech.style.top = (mouthY - h - 12 + window.scrollY) + 'px';
+            speech.style.setProperty('--tail-x', Math.min(Math.max(mouthX - left - 6, 14), w - 26) + 'px');
+            speech.offsetHeight; // restart the pop-in animation
+            speech.classList.add('show');
+            clearTimeout(speechTimer);
+            speechTimer = setTimeout(function() { speech.classList.remove('show'); }, 4500);
+        }
+        window.addEventListener('resize', function() { speech.classList.remove('show'); });
+
+        // Next Kunstavond: the first Friday of the month, 18:00-21:00 Rotterdam time
+        (function() {
+            var link = document.getElementById('kunstavond');
+            var now = {};
+            new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', hourCycle: 'h23' })
+                .formatToParts(new Date()).forEach(function(p) { now[p.type] = +p.value; });
+            var y = now.year, m = now.month;
+            for (var tries = 0; tries < 24; tries++) {
+                var firstFriday = 1 + (5 - new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 7) % 7;
+                var key = y + '-' + (m < 10 ? '0' : '') + m;
+                var isThisMonth = y === now.year && m === now.month;
+                var stillToCome = !isThisMonth || now.day < firstFriday || (now.day === firstFriday && now.hour < 21);
+                if (stillToCome && kunstavondSkip.indexOf(key) === -1) break;
+                if (++m > 12) { m = 1; y++; }
+            }
+            if (isThisMonth && now.day === firstFriday) {
+                link.textContent = now.hour < 18 ? 'Kunstavond tonight, 18:00\u201321:00' : 'Kunstavond is on now, until 21:00';
+            } else {
+                var date = new Date(Date.UTC(y, m - 1, firstFriday, 12)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+                link.textContent = 'Next Kunstavond: ' + date.replace(',', '') + ', 18:00\u201321:00';
+            }
+        })();
+
+        // Save my contact: phones download the card, computers show a QR code to scan
+        document.getElementById('contact-link').addEventListener('click', function(event) {
+            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                event.preventDefault();
+                openPopup(document.getElementById('contact-popup'), this);
+            }
+        });
 
         // Next to the text, make the photo exactly as tall as the text block
         var sideBySide = window.matchMedia('(min-width: 780px)'); // keep in sync with style.css
